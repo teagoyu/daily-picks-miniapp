@@ -1,0 +1,100 @@
+<view class="container">
+
+  <!-- Header -->
+  <view class="header">
+    <view class="title">每日选股</view>
+    <view class="subtitle" wx:if="{{date}}">{{date}} · {{updatedAt}} 更新</view>
+  </view>
+
+  <!-- Loading -->
+  <view class="center" wx:if="{{loading}}">
+    <view class="loading-text">加载中...</view>
+  </view>
+
+  <!-- Error -->
+  <view class="center error" wx:elif="{{error}}">{{error}}</view>
+
+  <!-- Content -->
+  <block wx:else>
+
+    <!-- Market Tabs -->
+    <view class="tabs">
+      <view
+        wx:for="{{marketList}}"
+        wx:key="*this"
+        class="tab {{activeMarket === item ? 'active' : ''}}"
+        data-market="{{item}}"
+        bindtap="switchMarket"
+      >{{markets[item]}}</view>
+    </view>
+
+    <!-- Today's Picks -->
+    <view class="section-label">今日精选</view>
+    <view class="stock-list">
+      <view
+        wx:for="{{picks[activeMarket]}}"
+        wx:key="symbol"
+        class="stock-card pick-card"
+        data-stock="{{item}}"
+        bindtap="goDetail"
+      >
+        <view class="card-top">
+          <view class="left">
+            <view class="symbol">{{item.symbol}}</view>
+            <view class="name">{{item.name}}</view>
+          </view>
+          <view class="right">
+            <view class="change" style="color:{{item.changeColor}}">{{item.changeStr}}</view>
+            <view class="score-badge" style="background:{{item.scoreColor}}22;color:{{item.scoreColor}}">
+              {{item.scoreStr}}分
+            </view>
+          </view>
+        </view>
+        <view class="metrics">
+          <view class="metric">
+            <view class="m-label">PE</view>
+            <view class="m-val" style="color:{{item.peColor}}">{{item.peStr}}</view>
+          </view>
+          <view class="metric">
+            <view class="m-label">RSI</view>
+            <view class="m-val">{{item.rsi || '—'}}</view>
+          </view>
+          <view class="metric">
+            <view class="m-label">换手率</view>
+            <view class="m-val">{{item.turnover_rate ? item.turnover_rate + '%' : '—'}}</view>
+          </view>
+          <view class="metric">
+            <view class="m-label">均线</view>
+            <view class="m-val ma-tag">{{item.maTag}}</view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- All Stocks Toggle -->
+    <view class="toggle-row" bindtap="toggleShowAll">
+      <text>全部标的排名</text>
+      <text class="arrow">{{showAll ? '▲' : '▼'}}</text>
+    </view>
+    <view wx:if="{{showAll}}" class="stock-list all-list">
+      <view
+        wx:for="{{allStocks[activeMarket]}}"
+        wx:key="symbol"
+        class="stock-row"
+        data-stock="{{item}}"
+        bindtap="goDetail"
+      >
+        <view class="row-rank">{{index + 1}}</view>
+        <view class="row-info">
+          <view class="symbol small">{{item.symbol}}</view>
+          <view class="name small">{{item.name}}</view>
+        </view>
+        <view class="row-right">
+          <view class="change small" style="color:{{item.changeColor}}">{{item.changeStr}}</view>
+          <view class="score small" style="color:{{item.scoreColor}}">{{item.scoreStr}}</view>
+        </view>
+      </view>
+    </view>
+
+  </block>
+</view>

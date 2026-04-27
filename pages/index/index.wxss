@@ -1,0 +1,78 @@
+.container { padding: 0 0 40rpx; background: var(--bg); min-height: 100vh; }
+
+/* Header */
+.header { padding: 40rpx 32rpx 24rpx; }
+.title { font-size: 44rpx; font-weight: 700; color: var(--text); }
+.subtitle { font-size: 24rpx; color: var(--muted); margin-top: 8rpx; }
+
+/* States */
+.center { display: flex; align-items: center; justify-content: center; padding: 120rpx 0; }
+.loading-text { color: var(--muted); font-size: 28rpx; }
+.error { color: var(--red); font-size: 26rpx; padding: 32rpx; }
+
+/* Tabs */
+.tabs { display: flex; padding: 0 32rpx; margin-bottom: 24rpx; gap: 16rpx; }
+.tab {
+  flex: 1; text-align: center; padding: 16rpx 0;
+  font-size: 26rpx; color: var(--muted);
+  border-bottom: 3rpx solid transparent;
+  transition: all 0.2s;
+}
+.tab.active { color: var(--blue); border-bottom-color: var(--blue); font-weight: 600; }
+
+/* Section label */
+.section-label {
+  font-size: 22rpx; color: var(--purple); letter-spacing: 3rpx;
+  text-transform: uppercase; padding: 0 32rpx 16rpx;
+}
+
+/* Stock cards (picks) */
+.stock-list { padding: 0 24rpx; }
+.stock-card {
+  background: var(--bg-card);
+  border: 1rpx solid var(--border);
+  border-radius: 16rpx;
+  padding: 28rpx;
+  margin-bottom: 16rpx;
+}
+.pick-card { border-left: 4rpx solid var(--blue); }
+
+.card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20rpx; }
+.left { flex: 1; }
+.symbol { font-size: 30rpx; font-weight: 700; color: var(--text); }
+.name { font-size: 24rpx; color: var(--muted); margin-top: 4rpx; }
+.right { align-items: flex-end; display: flex; flex-direction: column; gap: 8rpx; }
+.change { font-size: 32rpx; font-weight: 700; }
+.score-badge {
+  font-size: 22rpx; padding: 4rpx 14rpx;
+  border-radius: 20rpx; font-weight: 600;
+}
+
+/* Metrics row */
+.metrics { display: flex; gap: 0; }
+.metric { flex: 1; text-align: center; }
+.m-label { font-size: 20rpx; color: var(--muted); margin-bottom: 6rpx; }
+.m-val { font-size: 26rpx; font-weight: 600; color: var(--text); }
+.ma-tag { font-size: 22rpx; color: var(--yellow); }
+
+/* Toggle */
+.toggle-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 24rpx 32rpx; color: var(--muted); font-size: 26rpx;
+  border-top: 1rpx solid var(--border); margin-top: 8rpx;
+}
+.arrow { color: var(--blue); }
+
+/* All-stocks list rows */
+.all-list { margin-top: 8rpx; }
+.stock-row {
+  display: flex; align-items: center; padding: 20rpx 12rpx;
+  border-bottom: 1rpx solid var(--border);
+}
+.row-rank { width: 48rpx; font-size: 24rpx; color: var(--muted); text-align: center; }
+.row-info { flex: 1; padding: 0 16rpx; }
+.row-right { display: flex; flex-direction: column; align-items: flex-end; gap: 4rpx; }
+.small { font-size: 24rpx; }
+.symbol.small { font-weight: 600; color: var(--text); }
+.name.small { color: var(--muted); }
+.score.small { font-weight: 600; }

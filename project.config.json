@@ -1,0 +1,15 @@
+{
+  "appid": "YOUR_APPID_HERE",
+  "projectname": "daily-picks",
+  "description": "每日选股小程序",
+  "compileType": "miniprogram",
+  "setting": {
+    "urlCheck": true,
+    "es6": true,
+    "enhance": true,
+    "postcss": true,
+    "minified": true,
+    "newFeature": true
+  },
+  "condition": {}
+}

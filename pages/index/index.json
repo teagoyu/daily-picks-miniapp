@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "每日选股",
+  "enablePullDownRefresh": true,
+  "backgroundColor": "#0d1117",
+  "backgroundTextStyle": "dark"
+}

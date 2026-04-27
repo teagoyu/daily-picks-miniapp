@@ -1,0 +1,68 @@
+<view class="container" wx:if="{{stock}}">
+
+  <!-- Hero -->
+  <view class="hero">
+    <view class="hero-left">
+      <view class="symbol">{{stock.symbol}}</view>
+      <view class="name">{{stock.name}}</view>
+      <view class="sector" wx:if="{{stock.sector}}">{{stock.sector}}</view>
+    </view>
+    <view class="hero-right">
+      <view class="change" style="color:{{stock.changeColor}}">{{stock.changeStr}}</view>
+      <view class="score-big" style="color:{{stock.scoreColor}}">
+        {{stock.score}} <text class="score-unit">分</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- Key Metrics Grid -->
+  <view class="section-title">关键指标</view>
+  <view class="metrics-grid">
+    <view class="metric-box">
+      <view class="mbox-label">PE</view>
+      <view class="mbox-val" style="color:{{stock.peColor}}">{{stock.peStr}}</view>
+    </view>
+    <view class="metric-box" wx:if="{{stock.hasPB}}">
+      <view class="mbox-label">PB</view>
+      <view class="mbox-val">{{stock.pb}}x</view>
+    </view>
+    <view class="metric-box" wx:if="{{stock.hasTurnover}}">
+      <view class="mbox-label">换手率</view>
+      <view class="mbox-val">{{stock.turnover_rate}}%</view>
+    </view>
+    <view class="metric-box" wx:if="{{stock.hasRSI}}">
+      <view class="mbox-label">RSI</view>
+      <view class="mbox-val">{{stock.rsi}}</view>
+    </view>
+    <view class="metric-box" wx:if="{{stock.hasVolRatio}}">
+      <view class="mbox-label">量比</view>
+      <view class="mbox-val">{{stock.vol_ratio}}x</view>
+    </view>
+    <view class="metric-box">
+      <view class="mbox-label">均线信号</view>
+      <view class="mbox-val ma">{{stock.ma_signal || '—'}}</view>
+    </view>
+  </view>
+
+  <!-- Score breakdown hint -->
+  <view class="section-title">评分说明</view>
+  <view class="score-card">
+    <view class="score-row">
+      <text class="score-dim">成交量动能</text><text class="score-weight">25%</text>
+    </view>
+    <view class="score-row">
+      <text class="score-dim">价格动能</text><text class="score-weight">20%</text>
+    </view>
+    <view class="score-row">
+      <text class="score-dim">PE 吸引力</text><text class="score-weight">15%</text>
+    </view>
+    <view class="score-row">
+      <text class="score-dim">均线结构</text><text class="score-weight">25%</text>
+    </view>
+    <view class="score-row">
+      <text class="score-dim">价值缺口</text><text class="score-weight">15%</text>
+    </view>
+  </view>
+
+  <view class="disclaimer">以上数据仅供参考，不构成投资建议</view>
+</view>
