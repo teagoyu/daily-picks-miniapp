@@ -1,68 +1,98 @@
-<view class="container" wx:if="{{stock}}">
+<view class="page" wx:if="{{stock}}">
 
-  <!-- Hero -->
-  <view class="hero">
-    <view class="hero-left">
-      <view class="symbol">{{stock.symbol}}</view>
-      <view class="name">{{stock.name}}</view>
-      <view class="sector" wx:if="{{stock.sector}}">{{stock.sector}}</view>
-    </view>
-    <view class="hero-right">
-      <view class="change" style="color:{{stock.changeColor}}">{{stock.changeStr}}</view>
-      <view class="score-big" style="color:{{stock.scoreColor}}">
-        {{stock.score}} <text class="score-unit">分</text>
+  <!-- ── Hero Banner ── -->
+  <view class="hero {{stock.change >= 0 ? 'hero-up' : 'hero-down'}}">
+    <view class="hero-inner">
+      <view class="hero-top">
+        <view class="hero-badge">{{stock.symbol}}</view>
+        <view class="hero-score-ring">
+          <text class="ring-val" style="color:{{stock.scoreColor}}">{{stock.score}}</text>
+          <text class="ring-label">分</text>
+        </view>
+      </view>
+      <view class="hero-name">{{stock.name}}</view>
+      <view class="hero-sector" wx:if="{{stock.sector}}">{{stock.sector}}</view>
+      <view class="hero-price-row">
+        <text class="hero-price">{{stock.price}}</text>
+        <text class="hero-change" style="color:{{stock.changeColor}}">{{stock.changeStr}}</text>
       </view>
     </view>
   </view>
 
-  <!-- Key Metrics Grid -->
+  <!-- ── Metrics Grid ── -->
   <view class="section-title">关键指标</view>
   <view class="metrics-grid">
-    <view class="metric-box">
-      <view class="mbox-label">PE</view>
-      <view class="mbox-val" style="color:{{stock.peColor}}">{{stock.peStr}}</view>
+    <view class="m-box">
+      <text class="m-icon">📊</text>
+      <text class="m-label">PE 估值</text>
+      <text class="m-val" style="color:{{stock.peColor}}">{{stock.peStr}}</text>
     </view>
-    <view class="metric-box" wx:if="{{stock.hasPB}}">
-      <view class="mbox-label">PB</view>
-      <view class="mbox-val">{{stock.pb}}x</view>
+    <view class="m-box" wx:if="{{stock.hasPB}}">
+      <text class="m-icon">📚</text>
+      <text class="m-label">PB</text>
+      <text class="m-val">{{stock.pb}}x</text>
     </view>
-    <view class="metric-box" wx:if="{{stock.hasTurnover}}">
-      <view class="mbox-label">换手率</view>
-      <view class="mbox-val">{{stock.turnover_rate}}%</view>
+    <view class="m-box" wx:if="{{stock.hasTurnover}}">
+      <text class="m-icon">🔄</text>
+      <text class="m-label">换手率</text>
+      <text class="m-val">{{stock.turnover_rate}}%</text>
     </view>
-    <view class="metric-box" wx:if="{{stock.hasRSI}}">
-      <view class="mbox-label">RSI</view>
-      <view class="mbox-val">{{stock.rsi}}</view>
+    <view class="m-box" wx:if="{{stock.hasRSI}}">
+      <text class="m-icon">📡</text>
+      <text class="m-label">RSI</text>
+      <text class="m-val {{stock.rsi > 70 ? 'val-red' : stock.rsi < 30 ? 'val-green' : ''}}">{{stock.rsi}}</text>
     </view>
-    <view class="metric-box" wx:if="{{stock.hasVolRatio}}">
-      <view class="mbox-label">量比</view>
-      <view class="mbox-val">{{stock.vol_ratio}}x</view>
+    <view class="m-box" wx:if="{{stock.hasVolRatio}}">
+      <text class="m-icon">📦</text>
+      <text class="m-label">量比</text>
+      <text class="m-val">{{stock.vol_ratio}}x</text>
     </view>
-    <view class="metric-box">
-      <view class="mbox-label">均线信号</view>
-      <view class="mbox-val ma">{{stock.ma_signal || '—'}}</view>
+    <view class="m-box">
+      <text class="m-icon">📈</text>
+      <text class="m-label">均线信号</text>
+      <text class="m-val val-yellow">{{stock.ma_signal || '—'}}</text>
     </view>
   </view>
 
-  <!-- Score breakdown hint -->
-  <view class="section-title">评分说明</view>
+  <!-- ── Score Breakdown ── -->
+  <view class="section-title">评分构成</view>
   <view class="score-card">
-    <view class="score-row">
-      <text class="score-dim">成交量动能</text><text class="score-weight">25%</text>
+    <view class="score-item">
+      <view class="si-top">
+        <text class="si-label">成交量动能</text>
+        <text class="si-pct">25%</text>
+      </view>
+      <view class="si-bar-bg"><view class="si-bar" style="width:25%"></view></view>
     </view>
-    <view class="score-row">
-      <text class="score-dim">价格动能</text><text class="score-weight">20%</text>
+    <view class="score-item">
+      <view class="si-top">
+        <text class="si-label">均线结构</text>
+        <text class="si-pct">25%</text>
+      </view>
+      <view class="si-bar-bg"><view class="si-bar" style="width:25%"></view></view>
     </view>
-    <view class="score-row">
-      <text class="score-dim">PE 吸引力</text><text class="score-weight">15%</text>
+    <view class="score-item">
+      <view class="si-top">
+        <text class="si-label">价格动能</text>
+        <text class="si-pct">20%</text>
+      </view>
+      <view class="si-bar-bg"><view class="si-bar" style="width:20%"></view></view>
     </view>
-    <view class="score-row">
-      <text class="score-dim">均线结构</text><text class="score-weight">25%</text>
+    <view class="score-item">
+      <view class="si-top">
+        <text class="si-label">PE 吸引力</text>
+        <text class="si-pct">15%</text>
+      </view>
+      <view class="si-bar-bg"><view class="si-bar" style="width:15%"></view></view>
     </view>
-    <view class="score-row">
-      <text class="score-dim">价值缺口</text><text class="score-weight">15%</text>
+    <view class="score-item last">
+      <view class="si-top">
+        <text class="si-label">价值缺口</text>
+        <text class="si-pct">15%</text>
+      </view>
+      <view class="si-bar-bg"><view class="si-bar" style="width:15%"></view></view>
     </view>
   </view>
 
-  <view class="disclaimer">以上数据仅供参考，不构成投资建议</view>
+  <view class="disclaimer">⚠️ 数据仅供研究参考，不构成投资建议</view>
 </view>

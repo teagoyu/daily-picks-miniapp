@@ -1,71 +1,109 @@
-<view class="container">
+<view class="page">
 
-  <!-- Header -->
+  <!-- ── Header ── -->
   <view class="header">
-    <view class="title">每日选股</view>
-    <view class="subtitle" wx:if="{{date}}">{{date}} · {{updatedAt}} 更新</view>
+    <view class="header-top">
+      <view>
+        <view class="header-eyebrow">DAILY PICKS</view>
+        <view class="header-title">每日选股</view>
+      </view>
+      <view class="date-chip" wx:if="{{date}}">
+        <text class="date-dot">●</text>
+        <text class="date-text">{{date}}</text>
+      </view>
+    </view>
+    <view class="header-sub" wx:if="{{updatedAt}}">最后更新 {{updatedAt}}</view>
   </view>
 
-  <!-- Loading -->
-  <view class="center" wx:if="{{loading}}">
-    <view class="loading-text">加载中...</view>
+  <!-- ── Loading Skeleton ── -->
+  <view wx:if="{{loading}}" class="skeleton-wrap">
+    <view class="skel-tabs"></view>
+    <view class="skel-card"></view>
+    <view class="skel-card short"></view>
+    <view class="skel-card"></view>
   </view>
 
-  <!-- Error -->
-  <view class="center error" wx:elif="{{error}}">{{error}}</view>
+  <!-- ── Error ── -->
+  <view wx:elif="{{error}}" class="state-box">
+    <text class="state-icon">⚡</text>
+    <text class="state-msg">{{error}}</text>
+    <view class="retry-btn" bindtap="loadData">重新加载</view>
+  </view>
 
-  <!-- Content -->
+  <!-- ── Content ── -->
   <block wx:else>
 
     <!-- Market Tabs -->
-    <view class="tabs">
-      <view
-        wx:for="{{marketList}}"
-        wx:key="*this"
-        class="tab {{activeMarket === item ? 'active' : ''}}"
-        data-market="{{item}}"
-        bindtap="switchMarket"
-      >{{markets[item]}}</view>
+    <view class="tabs-wrap">
+      <view class="tabs">
+        <view
+          wx:for="{{marketList}}"
+          wx:key="*this"
+          class="tab {{activeMarket === item ? 'tab-active' : ''}}"
+          data-market="{{item}}"
+          bindtap="switchMarket"
+        >{{markets[item]}}</view>
+      </view>
     </view>
 
-    <!-- Today's Picks -->
-    <view class="section-label">今日精选</view>
-    <view class="stock-list">
+    <!-- Picks Section -->
+    <view class="section-head">
+      <view class="section-dot"></view>
+      <text class="section-label">今日精选</text>
+      <text class="section-count">TOP {{picks[activeMarket].length}}</text>
+    </view>
+
+    <view class="picks-list">
       <view
         wx:for="{{picks[activeMarket]}}"
         wx:key="symbol"
-        class="stock-card pick-card"
+        class="pick-card {{item.change >= 0 ? 'card-up' : 'card-down'}}"
         data-stock="{{item}}"
         bindtap="goDetail"
       >
-        <view class="card-top">
-          <view class="left">
-            <view class="symbol">{{item.symbol}}</view>
-            <view class="name">{{item.name}}</view>
-          </view>
-          <view class="right">
-            <view class="change" style="color:{{item.changeColor}}">{{item.changeStr}}</view>
-            <view class="score-badge" style="background:{{item.scoreColor}}22;color:{{item.scoreColor}}">
-              {{item.scoreStr}}分
+        <!-- Row 1: rank + symbol + name | price + change -->
+        <view class="pc-row1">
+          <view class="pc-left">
+            <view class="pc-rank">{{index + 1}}</view>
+            <view class="pc-sym-wrap">
+              <text class="pc-symbol">{{item.symbol}}</text>
+              <text class="pc-name">{{item.name}}</text>
             </view>
           </view>
+          <view class="pc-right">
+            <text class="pc-price">{{item.priceStr}}</text>
+            <text class="pc-change" style="color:{{item.changeColor}}">{{item.changeStr}}</text>
+          </view>
         </view>
-        <view class="metrics">
-          <view class="metric">
-            <view class="m-label">PE</view>
-            <view class="m-val" style="color:{{item.peColor}}">{{item.peStr}}</view>
+
+        <!-- Divider -->
+        <view class="pc-divider"></view>
+
+        <!-- Row 2: Metrics -->
+        <view class="pc-metrics">
+          <view class="pc-metric">
+            <text class="pm-label">PE</text>
+            <text class="pm-val" style="color:{{item.peColor}}">{{item.peStr}}</text>
           </view>
-          <view class="metric">
-            <view class="m-label">RSI</view>
-            <view class="m-val">{{item.rsi || '—'}}</view>
+          <view class="pm-sep"></view>
+          <view class="pc-metric">
+            <text class="pm-label">RSI</text>
+            <text class="pm-val">{{item.rsi || '—'}}</text>
           </view>
-          <view class="metric">
-            <view class="m-label">换手率</view>
-            <view class="m-val">{{item.turnover_rate ? item.turnover_rate + '%' : '—'}}</view>
+          <view class="pm-sep"></view>
+          <view class="pc-metric">
+            <text class="pm-label">换手率</text>
+            <text class="pm-val">{{item.turnover_rate ? item.turnover_rate + '%' : '—'}}</text>
           </view>
-          <view class="metric">
-            <view class="m-label">均线</view>
-            <view class="m-val ma-tag">{{item.maTag}}</view>
+          <view class="pm-sep"></view>
+          <view class="pc-metric">
+            <text class="pm-label">均线</text>
+            <text class="pm-val pm-ma">{{item.maTag}}</text>
+          </view>
+          <view class="pm-sep"></view>
+          <view class="pc-metric">
+            <text class="pm-label">评分</text>
+            <text class="pm-val" style="color:{{item.scoreColor}}">{{item.scoreStr}}</text>
           </view>
         </view>
       </view>
@@ -73,28 +111,35 @@
 
     <!-- All Stocks Toggle -->
     <view class="toggle-row" bindtap="toggleShowAll">
-      <text>全部标的排名</text>
-      <text class="arrow">{{showAll ? '▲' : '▼'}}</text>
+      <view class="toggle-left">
+        <text class="toggle-title">全部标的排名</text>
+        <text class="toggle-total">共 {{allStocks[activeMarket].length}} 只</text>
+      </view>
+      <view class="toggle-icon {{showAll ? 'rotate' : ''}}">›</view>
     </view>
-    <view wx:if="{{showAll}}" class="stock-list all-list">
+
+    <view wx:if="{{showAll}}" class="all-list">
       <view
         wx:for="{{allStocks[activeMarket]}}"
         wx:key="symbol"
-        class="stock-row"
+        class="list-row"
         data-stock="{{item}}"
         bindtap="goDetail"
       >
-        <view class="row-rank">{{index + 1}}</view>
-        <view class="row-info">
-          <view class="symbol small">{{item.symbol}}</view>
-          <view class="name small">{{item.name}}</view>
+        <view class="lr-rank {{index < 3 ? 'lr-rank-top' : ''}}">{{index + 1}}</view>
+        <view class="lr-info">
+          <text class="lr-symbol">{{item.symbol}}</text>
+          <text class="lr-name">{{item.name}}</text>
         </view>
-        <view class="row-right">
-          <view class="change small" style="color:{{item.changeColor}}">{{item.changeStr}}</view>
-          <view class="score small" style="color:{{item.scoreColor}}">{{item.scoreStr}}</view>
+        <view class="lr-right">
+          <text class="lr-change" style="color:{{item.changeColor}}">{{item.changeStr}}</text>
+          <text class="lr-score" style="color:{{item.scoreColor}}">{{item.scoreStr}}分</text>
         </view>
+        <text class="lr-arrow">›</text>
       </view>
     </view>
 
   </block>
+
+  <custom-tab-bar />
 </view>

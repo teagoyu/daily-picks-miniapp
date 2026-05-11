@@ -1,0 +1,74 @@
+<view class="page">
+
+  <!-- ── Header ── -->
+  <view class="header">
+    <view class="header-eyebrow">DEEP DIVE REPORTS</view>
+    <view class="header-title">财报深度分析</view>
+    <view class="header-sub">机构级研究 · {{reports.length}}篇报告</view>
+  </view>
+
+  <!-- ── Filter ── -->
+  <view class="filter-wrap">
+    <view class="filter-bar">
+      <view
+        wx:for="{{markets}}"
+        wx:key="*this"
+        class="filter-pill {{filterMarket === item ? 'pill-active' : ''}}"
+        data-market="{{item}}"
+        bindtap="switchMarket"
+      >{{item === 'ALL' ? '全部' : item}}</view>
+    </view>
+  </view>
+
+  <!-- ── Loading ── -->
+  <view wx:if="{{loading}}" class="state-box">
+    <view class="spinner"></view>
+    <text class="state-text">加载中...</text>
+  </view>
+
+  <!-- ── Error ── -->
+  <view wx:elif="{{error}}" class="state-box">
+    <text class="state-icon">⚠️</text>
+    <text class="state-text">{{error}}</text>
+  </view>
+
+  <!-- ── Report Cards ── -->
+  <view wx:else class="report-list">
+    <block wx:for="{{reports}}" wx:key="file">
+      <view
+        wx:if="{{filterMarket === 'ALL' || item.market === filterMarket}}"
+        class="report-card"
+        data-url="{{item.url}}"
+        data-title="{{item.title}}"
+        bindtap="openReport"
+      >
+        <!-- Ticker Avatar -->
+        <view class="rc-avatar market-{{item.market}}">
+          <text class="rc-avatar-text">{{item.ticker.slice(0,2)}}</text>
+        </view>
+
+        <!-- Body -->
+        <view class="rc-body">
+          <view class="rc-title">{{item.title}}</view>
+          <view class="rc-name">{{item.name}}</view>
+          <view class="rc-meta">
+            <view class="rc-market-tag market-bg-{{item.market}}">{{item.market}}</view>
+            <text class="rc-date">{{item.date}}</text>
+          </view>
+        </view>
+
+        <!-- Arrow -->
+        <view class="rc-arrow">
+          <text class="rc-arrow-icon">›</text>
+        </view>
+      </view>
+    </block>
+
+    <view wx:if="{{reports.length === 0}}" class="state-box">
+      <text class="state-icon">📭</text>
+      <text class="state-text">暂无报告</text>
+    </view>
+  </view>
+
+  <custom-tab-bar />
+</view>

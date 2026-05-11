@@ -1,14 +1,33 @@
 {
   "pages": [
     "pages/index/index",
-    "pages/detail/detail"
+    "pages/analysis/analysis",
+    "pages/detail/detail",
+    "pages/report-viewer/report-viewer"
   ],
   "window": {
     "backgroundTextStyle": "dark",
     "navigationBarBackgroundColor": "#0d1117",
-    "navigationBarTitleText": "每日选股",
+    "navigationBarTitleText": "慢钱研究所",
     "navigationBarTextStyle": "white",
     "backgroundColor": "#0d1117"
+  },
+  "tabBar": {
+    "custom": true,
+    "color": "#8b949e",
+    "selectedColor": "#58a6ff",
+    "backgroundColor": "#161b22",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "每日选股"
+      },
+      {
+        "pagePath": "pages/analysis/analysis",
+        "text": "深度分析"
+      }
+    ]
   },
   "style": "v2",
   "sitemapLocation": "sitemap.json",

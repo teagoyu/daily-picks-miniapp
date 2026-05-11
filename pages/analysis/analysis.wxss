@@ -1,0 +1,174 @@
+.page {
+  min-height: 100vh;
+  background: var(--bg);
+  padding-bottom: calc(130rpx + env(safe-area-inset-bottom));
+}
+
+/* ── Header ────────────────────────────────────── */
+.header {
+  padding: 56rpx 32rpx 36rpx;
+  background: linear-gradient(180deg, #0d1a2e 0%, var(--bg) 100%);
+  border-bottom: 1rpx solid var(--border-l);
+}
+
+.header-eyebrow {
+  font-size: 20rpx;
+  font-weight: 600;
+  letter-spacing: 4rpx;
+  color: var(--purple);
+  margin-bottom: 10rpx;
+}
+
+.header-title {
+  font-size: 52rpx;
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: -1rpx;
+  margin-bottom: 8rpx;
+}
+
+.header-sub {
+  font-size: 24rpx;
+  color: var(--muted);
+}
+
+/* ── Filter ────────────────────────────────────── */
+.filter-wrap {
+  padding: 24rpx 24rpx 0;
+}
+
+.filter-bar {
+  display: flex;
+  gap: 12rpx;
+}
+
+.filter-pill {
+  padding: 12rpx 32rpx;
+  border-radius: 40rpx;
+  font-size: 24rpx;
+  color: var(--muted);
+  background: var(--bg-card);
+  border: 1rpx solid var(--border-l);
+  font-weight: 500;
+}
+
+.pill-active {
+  background: var(--purple-bg);
+  border-color: var(--purple);
+  color: var(--purple);
+  font-weight: 700;
+}
+
+/* ── Report List ────────────────────────────────── */
+.report-list { padding: 24rpx 24rpx 0; }
+
+.report-card {
+  display: flex;
+  align-items: center;
+  gap: 24rpx;
+  background: var(--bg-card);
+  border: 1rpx solid var(--border-l);
+  border-radius: var(--radius-l);
+  padding: 28rpx 24rpx;
+  margin-bottom: 16rpx;
+}
+
+.report-card:active { background: var(--bg-hover); }
+
+/* Ticker Avatar */
+.rc-avatar {
+  width: 88rpx;
+  height: 88rpx;
+  border-radius: var(--radius-m);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.market-US { background: linear-gradient(135deg, #1e3a5f, #1a3050); border: 1rpx solid rgba(88,166,255,0.3); }
+.market-HK { background: linear-gradient(135deg, #5f1e1e, #501a1a); border: 1rpx solid rgba(248,81,73,0.3); }
+.market-CN { background: linear-gradient(135deg, #5f4a1e, #503c15); border: 1rpx solid rgba(227,179,65,0.3); }
+
+.rc-avatar-text {
+  font-size: 28rpx;
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: 1rpx;
+}
+
+/* Body */
+.rc-body { flex: 1; min-width: 0; }
+
+.rc-title {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 6rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.rc-name {
+  font-size: 24rpx;
+  color: var(--muted);
+  margin-bottom: 14rpx;
+}
+
+.rc-meta {
+  display: flex;
+  align-items: center;
+  gap: 14rpx;
+}
+
+.rc-market-tag {
+  font-size: 20rpx;
+  font-weight: 700;
+  padding: 4rpx 14rpx;
+  border-radius: 20rpx;
+  letter-spacing: 1rpx;
+}
+
+.market-bg-US { background: rgba(88,166,255,0.12); color: #60a5fa; }
+.market-bg-HK { background: rgba(248,81,73,0.12); color: #f87171; }
+.market-bg-CN { background: rgba(227,179,65,0.12); color: var(--yellow); }
+
+.rc-date { font-size: 22rpx; color: var(--muted-2); }
+
+/* Arrow */
+.rc-arrow {
+  width: 48rpx;
+  height: 48rpx;
+  border-radius: 50%;
+  background: var(--bg-hover);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.rc-arrow-icon { font-size: 32rpx; color: var(--muted); margin-left: 4rpx; }
+
+/* ── States ────────────────────────────────────── */
+.state-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 120rpx 32rpx;
+  gap: 20rpx;
+}
+
+.state-icon { font-size: 72rpx; }
+.state-text { font-size: 28rpx; color: var(--muted); text-align: center; }
+
+.spinner {
+  width: 64rpx;
+  height: 64rpx;
+  border: 4rpx solid var(--bg-hover);
+  border-top-color: var(--purple);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }

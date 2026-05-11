@@ -1,0 +1,48 @@
+.tab-bar {
+  display: flex;
+  background: rgba(13, 17, 23, 0.95);
+  border-top: 1rpx solid #21262d;
+  padding: 12rpx 0 calc(12rpx + env(safe-area-inset-bottom));
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.tab-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6rpx;
+  padding: 4rpx 0;
+}
+
+.tab-pill {
+  width: 80rpx;
+  height: 56rpx;
+  border-radius: 28rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+
+.pill-active {
+  background: rgba(88, 166, 255, 0.15);
+}
+
+.tab-icon {
+  font-size: 38rpx;
+  line-height: 1;
+}
+
+.tab-text {
+  font-size: 20rpx;
+  color: #6e7681;
+  letter-spacing: 0.5rpx;
+  transition: color 0.2s;
+}
+
+.text-active {
+  color: #58a6ff;
+  font-weight: 600;
+}

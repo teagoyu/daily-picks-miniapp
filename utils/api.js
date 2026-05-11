@@ -1,34 +1,58 @@
 const COS_BASE = 'https://bloom-1300867387.cos.ap-guangzhou.myqcloud.com'
 const LATEST_JSON = `${COS_BASE}/daily_picks/latest.json`
+const REPORTS_INDEX_JSON = `${COS_BASE}/reports/index.json`
 
 // Cache TTL: 30 minutes
 const CACHE_TTL = 30 * 60 * 1000
 
-let _cache = null
-let _cacheTime = 0
+let _picksCache = null
+let _picksCacheTime = 0
+let _reportsCache = null
+let _reportsCacheTime = 0
 
-function fetchPicks(forceRefresh = false) {
+function _request(url, forceRefresh) {
   return new Promise((resolve, reject) => {
-    const now = Date.now()
-    if (!forceRefresh && _cache && now - _cacheTime < CACHE_TTL) {
-      return resolve(_cache)
-    }
     wx.request({
-      url: LATEST_JSON,
+      url,
       method: 'GET',
+      timeout: 15000,
+      header: forceRefresh ? { 'Cache-Control': 'no-cache' } : {},
       success(res) {
         if (res.statusCode === 200 && res.data) {
-          _cache = res.data
-          _cacheTime = now
           resolve(res.data)
         } else {
           reject(new Error(`HTTP ${res.statusCode}`))
         }
       },
       fail(err) {
-        reject(err)
+        console.error('[api] request failed:', url, JSON.stringify(err))
+        reject(new Error(err.errMsg || JSON.stringify(err)))
       },
     })
+  })
+}
+
+function fetchPicks(forceRefresh = false) {
+  const now = Date.now()
+  if (!forceRefresh && _picksCache && now - _picksCacheTime < CACHE_TTL) {
+    return Promise.resolve(_picksCache)
+  }
+  return _request(LATEST_JSON, forceRefresh).then(data => {
+    _picksCache = data
+    _picksCacheTime = Date.now()
+    return data
+  })
+}
+
+function fetchReports(forceRefresh = false) {
+  const now = Date.now()
+  if (!forceRefresh && _reportsCache && now - _reportsCacheTime < CACHE_TTL) {
+    return Promise.resolve(_reportsCache)
+  }
+  return _request(REPORTS_INDEX_JSON, forceRefresh).then(data => {
+    _reportsCache = data
+    _reportsCacheTime = Date.now()
+    return data
   })
 }
 
@@ -66,4 +90,17 @@ function scoreColor(val) {
   return '#8b949e'
 }
 
-module.exports = { fetchPicks, fmtChange, fmtPE, fmtScore, changeColor, peColor, scoreColor }
+function marketLabel(market) {
+  return { US: '美股', HK: '港股', CN: 'A股' }[market] || market
+}
+
+function marketColor(market) {
+  return { US: '#60a5fa', HK: '#f87171', CN: '#fbbf24' }[market] || '#8b949e'
+}
+
+module.exports = {
+  fetchPicks, fetchReports,
+  fmtChange, fmtPE, fmtScore,
+  changeColor, peColor, scoreColor,
+  marketLabel, marketColor,
+}

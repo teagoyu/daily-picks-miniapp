@@ -1,19 +1,31 @@
-/* Global theme variables */
+/* ─── Design Tokens ─────────────────────────────────── */
 page {
-  --bg: #0d1117;
-  --bg-card: #161b22;
-  --bg-hover: #21262d;
-  --border: #30363d;
-  --text: #e6edf3;
-  --muted: #8b949e;
-  --green: #3fb950;
-  --red: #f85149;
-  --yellow: #d29922;
-  --blue: #58a6ff;
-  --purple: #bc8cff;
+  --bg:        #0d1117;
+  --bg-card:   #161b22;
+  --bg-card2:  #1c2128;
+  --bg-hover:  #21262d;
+  --border:    #30363d;
+  --border-l:  #21262d;
+  --text:      #e6edf3;
+  --text-2:    #c9d1d9;
+  --muted:     #8b949e;
+  --muted-2:   #6e7681;
+  --green:     #3fb950;
+  --green-bg:  rgba(63,185,80,0.10);
+  --red:       #f85149;
+  --red-bg:    rgba(248,81,73,0.10);
+  --yellow:    #e3b341;
+  --blue:      #58a6ff;
+  --blue-bg:   rgba(88,166,255,0.10);
+  --purple:    #bc8cff;
+  --purple-bg: rgba(188,140,255,0.10);
+  --cyan:      #39d353;
+
+  --radius-s:  10rpx;
+  --radius-m:  16rpx;
+  --radius-l:  24rpx;
 
   background-color: var(--bg);
   color: var(--text);
-  font-family: -apple-system, "PingFang SC", sans-serif;
-  font-size: 14px;
+  font-family: -apple-system, "PingFang SC", "Helvetica Neue", sans-serif;
 }

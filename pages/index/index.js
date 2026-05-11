@@ -21,6 +21,12 @@ Page({
     this.loadData()
   },
 
+  onShow() {
+    if (typeof this.getTabBar === 'function' && this.getTabBar()) {
+      this.getTabBar().setData({ selected: 0 })
+    }
+  },
+
   onPullDownRefresh() {
     this.loadData(true)
   },
@@ -52,6 +58,7 @@ Page({
   _enrichStocks(list) {
     return list.map(s => ({
       ...s,
+      priceStr: s.price ? String(s.price) : '—',
       changeStr: fmtChange(s.change),
       changeColor: changeColor(s.change),
       peStr: fmtPE(s.pe),
