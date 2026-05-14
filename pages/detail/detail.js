@@ -1,27 +1,23 @@
-const { fmtChange, fmtPE, changeColor, peColor, scoreColor } = require('../../utils/api')
+var api = require('../../utils/api')
 
 Page({
   data: {
     stock: null,
   },
 
-  onLoad(options) {
+  onLoad: function(options) {
     if (!options.data) return
-    const stock = JSON.parse(decodeURIComponent(options.data))
-    this.setData({
-      stock: {
-        ...stock,
-        changeStr: fmtChange(stock.change),
-        changeColor: changeColor(stock.change),
-        peStr: fmtPE(stock.pe),
-        peColor: peColor(stock.pe),
-        scoreColor: scoreColor(stock.score),
-        hasPB: stock.pb != null,
-        hasTurnover: stock.turnover_rate != null,
-        hasRSI: stock.rsi != null,
-        hasVolRatio: stock.vol_ratio != null,
-      },
-    })
+    var stock = JSON.parse(decodeURIComponent(options.data))
+    stock.changeStr = api.fmtChange(stock.change)
+    stock.changeColor = api.changeColor(stock.change)
+    stock.peStr = api.fmtPE(stock.pe)
+    stock.peColor = api.peColor(stock.pe)
+    stock.scoreColor = api.scoreColor(stock.score)
+    stock.hasPB = stock.pb != null
+    stock.hasTurnover = stock.turnover_rate != null
+    stock.hasRSI = stock.rsi != null
+    stock.hasVolRatio = stock.vol_ratio != null
+    this.setData({ stock: stock })
     wx.setNavigationBarTitle({ title: stock.name || stock.symbol })
   },
 })

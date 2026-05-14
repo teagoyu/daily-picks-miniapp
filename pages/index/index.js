@@ -1,4 +1,14 @@
-const { fetchPicks, fmtChange, fmtPE, fmtScore, changeColor, peColor, scoreColor, getLogoUrl, logoColor, logoInitial } = require('../../utils/api')
+var api = require('../../utils/api')
+var fetchPicks = api.fetchPicks
+var fmtChange = api.fmtChange
+var fmtPE = api.fmtPE
+var fmtScore = api.fmtScore
+var changeColor = api.changeColor
+var peColor = api.peColor
+var scoreColor = api.scoreColor
+var getLogoUrl = api.getLogoUrl
+var logoColor = api.logoColor
+var logoInitial = api.logoInitial
 
 const MARKET_LABELS = { US: '🇺🇸 美股', HK: '🇭🇰 港股', CN: '🇨🇳 A股' }
 const MARKETS = ['US', 'HK', 'CN']
@@ -21,10 +31,9 @@ Page({
     this.loadData()
   },
 
-  onShow() {
-    if (typeof this.getTabBar === 'function' && this.getTabBar()) {
-      this.getTabBar().setData({ selected: 0 })
-    }
+  onShow: function() {
+    var tabBar = this.getTabBar && this.getTabBar()
+    if (tabBar) tabBar.setData({ selected: 0 })
   },
 
   onPullDownRefresh() {

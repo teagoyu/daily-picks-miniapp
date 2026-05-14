@@ -1,4 +1,8 @@
-const { fetchReports, marketLabel, marketColor, getLogoUrl, logoColor, logoInitial } = require('../../utils/api')
+var api = require('../../utils/api')
+var fetchReports = api.fetchReports
+var getLogoUrl = api.getLogoUrl
+var logoColor = api.logoColor
+var logoInitial = api.logoInitial
 
 Page({
   data: {
@@ -13,10 +17,9 @@ Page({
     this.loadReports()
   },
 
-  onShow() {
-    if (typeof this.getTabBar === 'function' && this.getTabBar()) {
-      this.getTabBar().setData({ selected: 1 })
-    }
+  onShow: function() {
+    var tabBar = this.getTabBar && this.getTabBar()
+    if (tabBar) tabBar.setData({ selected: 1 })
   },
 
   onPullDownRefresh() {
