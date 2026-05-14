@@ -61,10 +61,26 @@
         data-stock="{{item}}"
         bindtap="goDetail"
       >
-        <!-- Row 1: rank + symbol + name | price + change -->
+        <!-- Row 1: avatar + symbol + name | price + change -->
         <view class="pc-row1">
           <view class="pc-left">
-            <view class="pc-rank">{{index + 1}}</view>
+            <!-- Logo avatar: image when available, colored text fallback -->
+            <view class="pc-avatar">
+              <image
+                wx:if="{{item.logoUrl && !item.logoError}}"
+                src="{{item.logoUrl}}"
+                class="pc-avatar-img"
+                mode="aspectFit"
+                binderror="onLogoError"
+                data-idx="{{index}}"
+              />
+              <view
+                wx:else
+                class="pc-avatar-text"
+                style="background:{{item.logoColor}}"
+              >{{item.logoInitial}}</view>
+              <view class="pc-avatar-rank">{{index + 1}}</view>
+            </view>
             <view class="pc-sym-wrap">
               <text class="pc-symbol">{{item.symbol}}</text>
               <text class="pc-name">{{item.name}}</text>

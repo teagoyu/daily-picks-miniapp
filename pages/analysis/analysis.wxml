@@ -42,9 +42,17 @@
         data-title="{{item.title}}"
         bindtap="openReport"
       >
-        <!-- Ticker Avatar -->
+        <!-- Ticker Avatar: logo image with text fallback -->
         <view class="rc-avatar market-{{item.market}}">
-          <text class="rc-avatar-text">{{item.ticker.slice(0,2)}}</text>
+          <image
+            wx:if="{{item.logoUrl && !item.logoError}}"
+            src="{{item.logoUrl}}"
+            class="rc-logo-img"
+            mode="aspectFit"
+            binderror="onLogoError"
+            data-idx="{{index}}"
+          />
+          <text wx:else class="rc-avatar-text">{{item.logoInitial || item.ticker.slice(0,2)}}</text>
         </view>
 
         <!-- Body -->

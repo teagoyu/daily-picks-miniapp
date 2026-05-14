@@ -1,3 +1,7 @@
+// Logo.dev free API token — sign up at https://logo.dev (500k req/month free)
+// Leave empty to always use text avatar fallback
+const LOGO_DEV_TOKEN = ''
+
 const COS_BASE = 'https://bloom-1300867387.cos.ap-guangzhou.myqcloud.com'
 const LATEST_JSON = `${COS_BASE}/daily_picks/latest.json`
 const REPORTS_INDEX_JSON = `${COS_BASE}/reports/index.json`
@@ -90,6 +94,30 @@ function scoreColor(val) {
   return '#8b949e'
 }
 
+// Return logo.dev URL for a symbol, or '' if no token configured
+function getLogoUrl(symbol) {
+  if (!LOGO_DEV_TOKEN) return ''
+  const ticker = symbol.replace(/\.(US|HK|SH|SZ|SG)$/i, '')
+  return `https://img.logo.dev/ticker/${ticker}?token=${LOGO_DEV_TOKEN}&size=64`
+}
+
+// Deterministic color per symbol for text avatar fallback
+const _AVATAR_COLORS = [
+  '#3B82F6', '#8B5CF6', '#EC4899', '#F59E0B',
+  '#10B981', '#EF4444', '#06B6D4', '#84CC16',
+]
+function logoColor(symbol) {
+  let h = 0
+  for (const c of symbol) h = (h * 31 + c.charCodeAt(0)) & 0x7fffffff
+  return _AVATAR_COLORS[h % _AVATAR_COLORS.length]
+}
+
+// First 1-2 letters to show in text avatar
+function logoInitial(symbol) {
+  const ticker = symbol.replace(/\.(US|HK|SH|SZ|SG)$/i, '')
+  return ticker.slice(0, ticker.length <= 2 ? 2 : 1).toUpperCase()
+}
+
 function marketLabel(market) {
   return { US: '美股', HK: '港股', CN: 'A股' }[market] || market
 }
@@ -103,4 +131,5 @@ module.exports = {
   fmtChange, fmtPE, fmtScore,
   changeColor, peColor, scoreColor,
   marketLabel, marketColor,
+  getLogoUrl, logoColor, logoInitial,
 }

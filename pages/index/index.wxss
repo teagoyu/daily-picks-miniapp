@@ -202,25 +202,54 @@
 .pc-left {
   display: flex;
   align-items: center;
-  gap: 14rpx;
+  gap: 18rpx;
   flex: 1;
   min-width: 0;
   margin-right: 16rpx;
 }
 
-.pc-rank {
-  width: 44rpx;
-  height: 44rpx;
-  border-radius: 50%;
+/* ── Logo Avatar ─────────────────────────────── */
+.pc-avatar {
+  position: relative;
+  width: 72rpx;
+  height: 72rpx;
+  flex-shrink: 0;
+}
+
+.pc-avatar-img {
+  width: 72rpx;
+  height: 72rpx;
+  border-radius: 18rpx;
   background: var(--bg-hover);
-  border: 1rpx solid var(--border-l);
+}
+
+.pc-avatar-text {
+  width: 72rpx;
+  height: 72rpx;
+  border-radius: 18rpx;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 22rpx;
+  font-size: 26rpx;
+  font-weight: 800;
+  color: #fff;
+}
+
+.pc-avatar-rank {
+  position: absolute;
+  bottom: -8rpx;
+  right: -8rpx;
+  width: 32rpx;
+  height: 32rpx;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 2rpx solid var(--border-l);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18rpx;
   font-weight: 700;
   color: var(--muted);
-  flex-shrink: 0;
 }
 
 .pc-sym-wrap {

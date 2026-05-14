@@ -1,4 +1,4 @@
-const { fetchReports, marketLabel, marketColor } = require('../../utils/api')
+const { fetchReports, marketLabel, marketColor, getLogoUrl, logoColor, logoInitial } = require('../../utils/api')
 
 Page({
   data: {
@@ -27,7 +27,14 @@ Page({
     this.setData({ loading: true, error: '' })
     try {
       const data = await fetchReports(forceRefresh)
-      this.setData({ reports: data.reports || [], loading: false })
+      const reports = (data.reports || []).map(r => ({
+        ...r,
+        logoUrl: getLogoUrl(r.ticker || ''),
+        logoColor: logoColor(r.ticker || ''),
+        logoInitial: logoInitial(r.ticker || ''),
+        logoError: false,
+      }))
+      this.setData({ reports, loading: false })
     } catch (e) {
       this.setData({ loading: false, error: e.message || '加载失败，请下拉刷新重试' })
     }
@@ -40,6 +47,11 @@ Page({
   get filteredReports() {
     const { reports, filterMarket } = this.data
     return filterMarket === 'ALL' ? reports : reports.filter(r => r.market === filterMarket)
+  },
+
+  onLogoError(e) {
+    const { idx } = e.currentTarget.dataset
+    this.setData({ [`reports[${idx}].logoError`]: true })
   },
 
   openReport(e) {

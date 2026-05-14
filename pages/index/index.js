@@ -1,4 +1,4 @@
-const { fetchPicks, fmtChange, fmtPE, fmtScore, changeColor, peColor, scoreColor } = require('../../utils/api')
+const { fetchPicks, fmtChange, fmtPE, fmtScore, changeColor, peColor, scoreColor, getLogoUrl, logoColor, logoInitial } = require('../../utils/api')
 
 const MARKET_LABELS = { US: '🇺🇸 美股', HK: '🇭🇰 港股', CN: '🇨🇳 A股' }
 const MARKETS = ['US', 'HK', 'CN']
@@ -66,7 +66,17 @@ Page({
       scoreStr: fmtScore(s.score),
       scoreColor: scoreColor(s.score),
       maTag: s.ma_signal || '—',
+      logoUrl: getLogoUrl(s.symbol || ''),
+      logoColor: logoColor(s.symbol || ''),
+      logoInitial: logoInitial(s.symbol || ''),
+      logoError: false,
     }))
+  },
+
+  onLogoError(e) {
+    const { idx } = e.currentTarget.dataset
+    const market = this.data.activeMarket
+    this.setData({ [`picks.${market}[${idx}].logoError`]: true })
   },
 
   switchMarket(e) {
