@@ -28,12 +28,11 @@ Page({
     try {
       const data = await fetchReports(forceRefresh)
       const reports = (data.reports || []).map(function(r) {
-        return Object.assign({}, r, {
-          logoUrl: getLogoUrl(r.ticker || ''),
-          logoColor: logoColor(r.ticker || ''),
-          logoInitial: logoInitial(r.ticker || ''),
-          logoError: false,
-        })
+        r.logoUrl = getLogoUrl(r.ticker || '')
+        r.logoColor = logoColor(r.ticker || '')
+        r.logoInitial = logoInitial(r.ticker || '')
+        r.logoError = false
+        return r
       })
       this.setData({ reports, loading: false })
     } catch (e) {

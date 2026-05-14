@@ -55,22 +55,21 @@ Page({
     }
   },
 
-  _enrichStocks(list) {
+  _enrichStocks: function(list) {
     return list.map(function(s) {
-      return Object.assign({}, s, {
-        priceStr: s.price ? String(s.price) : '—',
-        changeStr: fmtChange(s.change),
-        changeColor: changeColor(s.change),
-        peStr: fmtPE(s.pe),
-        peColor: peColor(s.pe),
-        scoreStr: fmtScore(s.score),
-        scoreColor: scoreColor(s.score),
-        maTag: s.ma_signal || '—',
-        logoUrl: getLogoUrl(s.symbol || ''),
-        logoColor: logoColor(s.symbol || ''),
-        logoInitial: logoInitial(s.symbol || ''),
-        logoError: false,
-      })
+      s.priceStr = s.price ? String(s.price) : '—'
+      s.changeStr = fmtChange(s.change)
+      s.changeColor = changeColor(s.change)
+      s.peStr = fmtPE(s.pe)
+      s.peColor = peColor(s.pe)
+      s.scoreStr = fmtScore(s.score)
+      s.scoreColor = scoreColor(s.score)
+      s.maTag = s.ma_signal || '—'
+      s.logoUrl = getLogoUrl(s.symbol || '')
+      s.logoColor = logoColor(s.symbol || '')
+      s.logoInitial = logoInitial(s.symbol || '')
+      s.logoError = false
+      return s
     })
   },
 

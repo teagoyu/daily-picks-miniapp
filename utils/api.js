@@ -107,8 +107,10 @@ const _AVATAR_COLORS = [
   '#10B981', '#EF4444', '#06B6D4', '#84CC16',
 ]
 function logoColor(symbol) {
-  let h = 0
-  for (const c of symbol) h = (h * 31 + c.charCodeAt(0)) & 0x7fffffff
+  var h = 0
+  for (var i = 0; i < symbol.length; i++) {
+    h = (h * 31 + symbol.charCodeAt(i)) & 0x7fffffff
+  }
   return _AVATAR_COLORS[h % _AVATAR_COLORS.length]
 }
 
