@@ -7,9 +7,9 @@ Component({
     ],
   },
   methods: {
-    switchTab(e) {
-      const idx = e.currentTarget.dataset.index
-      const path = this.data.tabs[idx].path
+    switchTab: function(e) {
+      var idx = e.currentTarget.dataset.index
+      var path = this.data.tabs[idx].path
       wx.switchTab({ url: path })
     },
   },

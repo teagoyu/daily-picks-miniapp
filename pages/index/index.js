@@ -10,8 +10,8 @@ var getLogoUrl = api.getLogoUrl
 var logoColor = api.logoColor
 var logoInitial = api.logoInitial
 
-const MARKET_LABELS = { US: '🇺🇸 美股', HK: '🇭🇰 港股', CN: '🇨🇳 A股' }
-const MARKETS = ['US', 'HK', 'CN']
+var MARKET_LABELS = { US: '🇺🇸 美股', HK: '🇭🇰 港股', CN: '🇨🇳 A股' }
+var MARKETS = ['US', 'HK', 'CN']
 
 Page({
   data: {
@@ -27,7 +27,7 @@ Page({
     showAll: false,
   },
 
-  onLoad() {
+  onLoad: function() {
     this.loadData()
   },
 
@@ -36,32 +36,37 @@ Page({
     if (tabBar) tabBar.setData({ selected: 0 })
   },
 
-  onPullDownRefresh() {
+  onPullDownRefresh: function() {
     this.loadData(true)
   },
 
-  async loadData(forceRefresh = false) {
+  loadData: function(forceRefresh) {
+    var self = this
+    var force = forceRefresh === true
     this.setData({ loading: true, error: '' })
-    try {
-      const data = await fetchPicks(forceRefresh)
-      const picks = {}
-      const allStocks = {}
-      MARKETS.forEach(mkt => {
-        picks[mkt] = this._enrichStocks(data.markets?.[mkt]?.picks || [])
-        allStocks[mkt] = this._enrichStocks(data.markets?.[mkt]?.all || [])
+    fetchPicks(force)
+      .then(function(data) {
+        var picks = {}
+        var allStocks = {}
+        MARKETS.forEach(function(mkt) {
+          var mk = data.markets && data.markets[mkt]
+          picks[mkt] = self._enrichStocks(mk && mk.picks ? mk.picks : [])
+          allStocks[mkt] = self._enrichStocks(mk && mk.all ? mk.all : [])
+        })
+        self.setData({
+          loading: false,
+          date: data.date || '',
+          updatedAt: data.updated_at || '',
+          picks: picks,
+          allStocks: allStocks,
+        })
       })
-      this.setData({
-        loading: false,
-        date: data.date || '',
-        updatedAt: data.updated_at || '',
-        picks,
-        allStocks,
+      .catch(function() {
+        self.setData({ loading: false, error: '数据加载失败，请下拉刷新重试' })
       })
-    } catch (e) {
-      this.setData({ loading: false, error: '数据加载失败，请下拉刷新重试' })
-    } finally {
-      wx.stopPullDownRefresh()
-    }
+      .then(function() {
+        wx.stopPullDownRefresh()
+      })
   },
 
   _enrichStocks: function(list) {
@@ -82,26 +87,26 @@ Page({
     })
   },
 
-  onLogoError(e) {
-    const idx = e.currentTarget.dataset.idx
-    const market = this.data.activeMarket
-    const update = {}
+  onLogoError: function(e) {
+    var idx = e.currentTarget.dataset.idx
+    var market = this.data.activeMarket
+    var update = {}
     update['picks.' + market + '[' + idx + '].logoError'] = true
     this.setData(update)
   },
 
-  switchMarket(e) {
+  switchMarket: function(e) {
     this.setData({ activeMarket: e.currentTarget.dataset.market, showAll: false })
   },
 
-  toggleShowAll() {
+  toggleShowAll: function() {
     this.setData({ showAll: !this.data.showAll })
   },
 
-  goDetail(e) {
-    const stock = e.currentTarget.dataset.stock
+  goDetail: function(e) {
+    var stock = e.currentTarget.dataset.stock
     wx.navigateTo({
-      url: `/pages/detail/detail?data=${encodeURIComponent(JSON.stringify(stock))}`,
+      url: '/pages/detail/detail?data=' + encodeURIComponent(JSON.stringify(stock)),
     })
   },
 })

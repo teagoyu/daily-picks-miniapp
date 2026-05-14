@@ -13,8 +13,8 @@ Page({
     markets: ['ALL', 'US', 'HK', 'CN'],
   },
 
-  onLoad() {
-    this.loadReports()
+  onLoad: function() {
+    this.loadReports(false)
   },
 
   onShow: function() {
@@ -22,53 +22,65 @@ Page({
     if (tabBar) tabBar.setData({ selected: 1 })
   },
 
-  onPullDownRefresh() {
-    this.loadReports(true).finally(() => wx.stopPullDownRefresh())
-  },
-
-  async loadReports(forceRefresh = false) {
-    this.setData({ loading: true, error: '' })
-    try {
-      const data = await fetchReports(forceRefresh)
-      const reports = (data.reports || []).map(function(r) {
-        r.logoUrl = getLogoUrl(r.ticker || '')
-        r.logoColor = logoColor(r.ticker || '')
-        r.logoInitial = logoInitial(r.ticker || '')
-        r.logoError = false
-        return r
+  onPullDownRefresh: function() {
+    this.loadReports(true)
+      .catch(function() {})
+      .then(function() {
+        wx.stopPullDownRefresh()
       })
-      this.setData({ reports, loading: false })
-    } catch (e) {
-      this.setData({ loading: false, error: e.message || '加载失败，请下拉刷新重试' })
-    }
   },
 
-  switchMarket(e) {
+  loadReports: function(forceRefresh) {
+    var self = this
+    var force = forceRefresh === true
+    this.setData({ loading: true, error: '' })
+    return fetchReports(force)
+      .then(function(data) {
+        var raw = data.reports ? data.reports : []
+        var reports = raw.map(function(r) {
+          r.logoUrl = getLogoUrl(r.ticker || '')
+          r.logoColor = logoColor(r.ticker || '')
+          r.logoInitial = logoInitial(r.ticker || '')
+          r.logoError = false
+          return r
+        })
+        self.setData({ reports: reports, loading: false })
+      })
+      .catch(function(e) {
+        var msg =
+          e.message ? e.message : '加载失败，请下拉刷新重试'
+        self.setData({ loading: false, error: msg })
+      })
+  },
+
+  switchMarket: function(e) {
     this.setData({ filterMarket: e.currentTarget.dataset.market })
   },
 
-  get filteredReports() {
-    const { reports, filterMarket } = this.data
-    return filterMarket === 'ALL' ? reports : reports.filter(r => r.market === filterMarket)
-  },
-
-  onLogoError(e) {
-    const idx = e.currentTarget.dataset.idx
-    const update = {}
+  onLogoError: function(e) {
+    var idx = e.currentTarget.dataset.idx
+    var update = {}
     update['reports[' + idx + '].logoError'] = true
     this.setData(update)
   },
 
-  openReport(e) {
-    const { url, title } = e.currentTarget.dataset
+  openReport: function(e) {
+    var ds = e.currentTarget.dataset
+    var url = ds.url
+    var title = ds.title
     if (!url) return
     wx.navigateTo({
-      url: `/pages/report-viewer/report-viewer?url=${encodeURIComponent(url)}&title=${encodeURIComponent(title)}`,
-      fail(err) {
-        // Fallback: copy link if webview fails (e.g. domain not whitelisted yet)
+      url:
+        '/pages/report-viewer/report-viewer?url=' +
+        encodeURIComponent(url) +
+        '&title=' +
+        encodeURIComponent(title),
+      fail: function() {
         wx.setClipboardData({
           data: url,
-          success: () => wx.showToast({ title: '链接已复制', icon: 'success' }),
+          success: function() {
+            wx.showToast({ title: '链接已复制', icon: 'success' })
+          },
         })
       },
     })
