@@ -56,27 +56,30 @@ Page({
   },
 
   _enrichStocks(list) {
-    return list.map(s => ({
-      ...s,
-      priceStr: s.price ? String(s.price) : '—',
-      changeStr: fmtChange(s.change),
-      changeColor: changeColor(s.change),
-      peStr: fmtPE(s.pe),
-      peColor: peColor(s.pe),
-      scoreStr: fmtScore(s.score),
-      scoreColor: scoreColor(s.score),
-      maTag: s.ma_signal || '—',
-      logoUrl: getLogoUrl(s.symbol || ''),
-      logoColor: logoColor(s.symbol || ''),
-      logoInitial: logoInitial(s.symbol || ''),
-      logoError: false,
-    }))
+    return list.map(function(s) {
+      return Object.assign({}, s, {
+        priceStr: s.price ? String(s.price) : '—',
+        changeStr: fmtChange(s.change),
+        changeColor: changeColor(s.change),
+        peStr: fmtPE(s.pe),
+        peColor: peColor(s.pe),
+        scoreStr: fmtScore(s.score),
+        scoreColor: scoreColor(s.score),
+        maTag: s.ma_signal || '—',
+        logoUrl: getLogoUrl(s.symbol || ''),
+        logoColor: logoColor(s.symbol || ''),
+        logoInitial: logoInitial(s.symbol || ''),
+        logoError: false,
+      })
+    })
   },
 
   onLogoError(e) {
-    const { idx } = e.currentTarget.dataset
+    const idx = e.currentTarget.dataset.idx
     const market = this.data.activeMarket
-    this.setData({ [`picks.${market}[${idx}].logoError`]: true })
+    const update = {}
+    update['picks.' + market + '[' + idx + '].logoError'] = true
+    this.setData(update)
   },
 
   switchMarket(e) {
